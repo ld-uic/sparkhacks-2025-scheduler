@@ -75,9 +75,9 @@ app.post("/submit",(res, req) => {
         // Get user id
         const user_email = "placeholder@hotmail.org" //TODO: change to actual stuff
         // finding user\
-        const user_index = -1 
+        var user_index = -1 
         for (let i = 0; i < data.length; i++) {
-            if(data[i].id = user_email){
+            if(data[i].id == user_email){
                 user_index = i;
             }
         }
@@ -88,9 +88,10 @@ app.post("/submit",(res, req) => {
         }
         // Going thru the BS i got into the function and replacing it un the db
         for (let i = 0; i < time_list.length; i++) {
-            for (let i = 0; i < data.length; i++) {
-                if(data[i].id = user_email){
-                    user_index = i;
+            for (let j = 0; i < data[user_index].workhours.length; i++) {
+                if(data[user_index].workhours[j].id == time_list[i].id){
+                    data[user_index].workhours[j].startTime = time_list[i].startTime;
+                    data[user_index].workhours[j].endTime = time_list[i].endTime;
                 }
             }
         }

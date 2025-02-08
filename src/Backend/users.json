@@ -1,21 +1,18 @@
 [
     {
         "id": 1,
-        "permissions": 0,
         "name": "John Business",
         "workhours": []
     },
 
     {
         "id": 2,
-        "permissions": 1,
         "name": "Mike Manager",
         "workhours": []
     },
 
     {
         "id": 3,
-        "permissions": 2,
         "name": "Alex Peasant",
         "workhours": []
     }
