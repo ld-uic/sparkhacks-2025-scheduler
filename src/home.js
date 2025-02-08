@@ -28,8 +28,6 @@ function Home()
               console.log("didn't work");
             }}
           />
-
-          <CustomCalendar />
         </header>
       </div>
     )
