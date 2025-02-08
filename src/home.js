@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import logo from "./logo.png";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
@@ -51,7 +51,13 @@ function Home() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <br />Have you ever experienced trouble with your business scheduler?  😒
+          <br />Despite it being well designed, when it comes to the user experience,
+          <br />you have to jump through several hoops just to find your schedule. 🥲😱
+          <br /><br />So we decided to fix that. 👌
+          <br />With "Whale of a Time", we offer a simple, minimalist design to access your schedule,
+          <br />as well as additional features that businesses, 😊
+          <br />from big and small, would be able to utilize. 😮😆
         </p>
 
         {isLoggedIn ? (
@@ -62,6 +68,10 @@ function Home() {
         ) : (
           <GoogleLogin onSuccess={handleLoginSuccess} onError={() => console.log("Login failed")} />
         )}
+
+        <a className="App-link" href="schedule" target="_blank" rel="noopener noreferrer">
+          No redirect? Click here!
+        </a>
       </header>
     </div>
   );
