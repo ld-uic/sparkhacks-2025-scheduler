@@ -70,7 +70,7 @@ function Home() {
         )}
 
         <a className="App-link" href="schedule" target="_blank" rel="noopener noreferrer">
-          No redirect? Click here!
+          Go to schedule!
         </a>
       </header>
     </div>
