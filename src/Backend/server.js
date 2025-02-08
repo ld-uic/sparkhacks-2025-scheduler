@@ -5,6 +5,7 @@ const fs = require("fs");
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "..", "build")))
 
 app.get("*", (req, res) => {
@@ -68,7 +69,7 @@ app.post("/", (req, res) => {
 });
 
 // POST to submit times for users
-app.post("/submit",(res, req) => {
+app.post("/submit",(req, res) => {
     try {
         const data = loadUsers();
         const time_list = req.body
@@ -102,7 +103,7 @@ app.post("/submit",(res, req) => {
 });
 
 //DELETE for removing times
-app.delete("/delete", (res, req) => {
+app.delete("/delete", (req, res) => {
     try {
         //req.body.
     } catch (err){
