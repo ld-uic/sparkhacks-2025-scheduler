@@ -1,17 +1,17 @@
 const express = require("express");
-const Timeslot = require("models/Timeslot");
+const User = require("models/User");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
     try {
         // Create a new Timeslot instance with request body data
-        const newTimeslot = new Timeslot(req.body);
+        const newUser = new User(req.body);
 
         // Save to MongoDB
-        const savedTimeslot = await newTimeslot.save();
+        const savedUser = await newUser.save();
 
         // Respond with the newly created timeslot
-        res.status(201).json(savedTimeslot);
+        res.status(201).json(savedUser);
     } catch (err) {
         console.error("Error creating timeslot:", err);
 
