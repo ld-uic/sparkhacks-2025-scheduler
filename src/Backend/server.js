@@ -67,6 +67,35 @@ app.post("/", (req, res) => {
     }
 });
 
+// The expectation is to get {id: , startTime: , endTime: } in req.body and user id in req.head
+app.post("/new", (res, req) => {
+    try {
+        const data = loadUsers();
+        const time_list = req.body
+        // Get user id
+        const user_email = "placeholder@hotmail.org" //TODO: change to actual stuff
+        // finding user
+        var user_index = -1 
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].id === user_email){
+                user_index = i;
+            }
+        }
+        // checking if we got the user
+        if(user_index === -1){
+            // TODO: Log user not found
+            return;
+        }
+        // Add new time object
+        data[user_index].workhours = [...data[user_index].workhours, ...time_list]
+        // Submiting changes
+        saveUsers(data);
+    } catch (err){
+        console.error("Error creating user:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 // POST to submit times for users
 app.post("/submit",(res, req) => {
     try {
@@ -95,6 +124,8 @@ app.post("/submit",(res, req) => {
                 }
             }
         }
+        // Submiting changes
+        saveUsers(data);
     } catch (err){
         console.error("Error creating user:", err);
         res.status(500).json({ error: "Internal Server Error" });
