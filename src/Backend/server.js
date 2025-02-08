@@ -41,6 +41,11 @@ function saveUsers(users) {
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2), "utf8");
 }
 
+// Writes times to user; id is index in json and time array is the whole list of time objects from front end
+function modifyUserHours( data, user_id, time_array){
+    data[user_id].workhours = time_array;
+}
+
 // POST route to add a new user
 app.post("/", (req, res) => {
     try {
@@ -57,6 +62,49 @@ app.post("/", (req, res) => {
 
         res.status(201).json(newUser); // Respond with the created user
     } catch (err) {
+        console.error("Error creating user:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+// POST to submit times for users
+app.post("/submit",(res, req) => {
+    try {
+        const data = loadUsers();
+        const time_list = req.body
+        // Get user id
+        const user_email = "placeholder@hotmail.org" //TODO: change to actual stuff
+        // finding user\
+        const user_index = -1 
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].id = user_email){
+                user_index = i;
+            }
+        }
+        // checking if we got the user
+        if(user_index == -1){
+            // TODO: Log user not found
+            return;
+        }
+        // Going thru the BS i got into the function and replacing it un the db
+        for (let i = 0; i < time_list.length; i++) {
+            for (let i = 0; i < data.length; i++) {
+                if(data[i].id = user_email){
+                    user_index = i;
+                }
+            }
+        }
+    } catch (err){
+        console.error("Error creating user:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+//DELETE for removing times
+app.delete("/delete", (res, req) => {
+    try {
+        //req.body.
+    } catch (err){
         console.error("Error creating user:", err);
         res.status(500).json({ error: "Internal Server Error" });
     }
