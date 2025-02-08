@@ -142,3 +142,13 @@ app.delete("/delete", (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+app.get("/retreve", (req, res) => {
+    try {
+        const data = loadUsers();
+        res.send(data[0].workhours)
+    } catch (err){
+        console.error("Error creating user:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
