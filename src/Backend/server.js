@@ -2,16 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const timeslotRoutes = require("/routes/timeslots");
 var fs = require("fs"),json;
+const path = require('path');
+
+//Path to the file
+const dbPath = path.resolve(__dirname, 'users.json');
 
 // Read data from the JSON file
 function readDatabase() {
-    const data = fs.readFileSync("users.json", 'utf8');
+    const data = fs.readFileSync(dbPath, 'utf8');
     return JSON.parse(data);
 }
   
 // Write data to the JSON file
 function writeDatabase(data) {
-    fs.writeFileSync("users.json", JSON.stringify(data, null, 2), 'utf8');
+    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
 }
 
 const app = express();
