@@ -4,6 +4,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './login';
 import Home from './home';
+import Schedule from './schedule';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/schedule" element={<Schedule/>} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
