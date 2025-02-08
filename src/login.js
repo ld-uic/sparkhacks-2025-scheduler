@@ -1,5 +1,6 @@
-import logo from './logo.svg';
 import './Login.css';
+
+import React from 'react';
 
 function Login() {
   return (
@@ -33,4 +34,4 @@ function Login() {
   );
 }
 
-export default App;
+export default Login;
