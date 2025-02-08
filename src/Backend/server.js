@@ -3,7 +3,16 @@ const cors = require("cors");
 const timeslotRoutes = require("/routes/timeslots");
 var fs = require("fs"),json;
 
-const data = JSON.parse(await fs.readFile('data.json', 'utf8'));
+// Read data from the JSON file
+function readDatabase() {
+    const data = fs.readFileSync("users.json", 'utf8');
+    return JSON.parse(data);
+}
+  
+// Write data to the JSON file
+function writeDatabase(data) {
+    fs.writeFileSync("users.json", JSON.stringify(data, null, 2), 'utf8');
+}
 
 const app = express();
 const port = process.env.PORT || 5000;
