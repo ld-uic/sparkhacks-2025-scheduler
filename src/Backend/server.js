@@ -17,9 +17,14 @@ app.get("*", (req, res) => {
 
 app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`);
+    if (loadUsers() == []){
+        console.log("Failed to load the database or database is empty!");
+    }else{
+        console.log("Database connected!");
+    }
 });
 
-const usersFilePath = path.join(__dirname, "../data/users.json"); // Adjust path based on project structure
+const usersFilePath = path.join(__dirname, "users.json"); // Adjust path based on project structure
 
 // Load existing users from JSON file
 function loadUsers() {
