@@ -69,7 +69,7 @@ app.post("/", (req, res) => {
 });
 
 // The expectation is to get {id: , startTime: , endTime: } in req.body and user id in req.head
-app.post("/new", (res, req) => {
+app.post("/new", (req, res) => {
     try {
         const data = loadUsers();
         const time_list = req.body
@@ -91,6 +91,8 @@ app.post("/new", (res, req) => {
         data[user_index].workhours = [...data[user_index].workhours, ...time_list]
         // Submiting changes
         saveUsers(data);
+        res.status(201).json(time_list); // Respond with the created user
+
     } catch (err){
         console.error("Error creating user:", err);
         res.status(500).json({ error: "Internal Server Error" });
@@ -118,7 +120,7 @@ app.post("/submit",(req, res) => {
         }
         // Going thru the BS i got into the function and replacing it un the db
         for (let i = 0; i < time_list.length; i++) {
-            for (let j = 0; i < data[user_index].workhours.length; i++) {
+            for (let j = 0; j < data[user_index].workhours.length; j++) {
                 if(data[user_index].workhours[j].id == time_list[i].id){
                     data[user_index].workhours[j].startTime = time_list[i].startTime;
                     data[user_index].workhours[j].endTime = time_list[i].endTime;
@@ -127,6 +129,8 @@ app.post("/submit",(req, res) => {
         }
         // Submiting changes
         saveUsers(data);
+        res.status(201).json(newUser); // Respond with the created user
+
     } catch (err){
         console.error("Error creating user:", err);
         res.status(500).json({ error: "Internal Server Error" });
@@ -136,9 +140,27 @@ app.post("/submit",(req, res) => {
 //DELETE for removing times
 app.delete("/delete", (req, res) => {
     try {
-        //req.body.
-    } catch (err){
-        console.error("Error creating user:", err);
+        const data = loadUsers();
+        const { userEmail, timeId } = req.body; // Expecting user email and time ID in the request body
+
+        if (!userEmail || !timeId) {
+            return res.status(400).json({ error: "Missing userEmail or timeId" });
+        }
+
+        let userIndex = data.findIndex(user => user.id === userEmail);
+
+        if (userIndex === -1) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Remove the time entry with matching ID
+        data[userIndex].workhours = data[userIndex].workhours.filter(time => time.id !== timeId);
+
+        saveUsers(data);
+        res.status(200).json({ message: "Work hour entry deleted successfully" });
+
+    } catch (err) {
+        console.error("Error deleting work hour entry:", err);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
