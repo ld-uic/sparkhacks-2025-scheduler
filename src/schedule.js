@@ -1,8 +1,7 @@
 import logo from './logo.svg';
-import {GoogleLogin} from '@react-oauth/google';
 import CustomCalendar from './CustomCalendar';
 
-function Home()
+function Schedule()
 {
     return (
         <div className="App">
@@ -13,4 +12,4 @@ function Home()
     )
 }
 
-export default Home;
+export default Schedule;
