@@ -5,57 +5,77 @@ function CustomCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
 
-  // Get the start of the current week (Sunday)
-  const getStartOfWeek = (date) => {
-    const startOfWeek = new Date(date);
-    startOfWeek.setDate(date.getDate() - date.getDay()); // Set to Sunday
-    return startOfWeek;
+  // Get the first day of the current month
+  const getFirstDayOfMonth = (date) => {
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    return firstDay;
   };
 
-  // Get an array of 7 days starting from the start of the week
-  const getWeekDays = (date) => {
-    const startOfWeek = getStartOfWeek(date);
+  // Get the last day of the current month
+  const getLastDayOfMonth = (date) => {
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return lastDay;
+  };
+
+  // Get the days of the current month in a 6x7 grid (42 cells)
+  const getMonthDays = (date) => {
+    const firstDay = getFirstDayOfMonth(date);
+    const lastDay = getLastDayOfMonth(date);
+
+    // Start from the Sunday before the first day of the month
+    const startDay = new Date(firstDay);
+    startDay.setDate(firstDay.getDate() - firstDay.getDay());
+
+    // Create an array for all the days (including overflow from previous and next month)
     const days = [];
-    for (let i = 0; i < 7; i++) {
-      const day = new Date(startOfWeek);
-      day.setDate(startOfWeek.getDate() + i);
+    for (let i = 0; i < 42; i++) { // 6 rows * 7 columns = 42 days
+      const day = new Date(startDay);
+      day.setDate(startDay.getDate() + i);
       days.push(day);
     }
+
     return days;
   };
 
-  const daysOfWeek = getWeekDays(currentDate);
+  const daysOfMonth = getMonthDays(currentDate);
 
   // Function to handle day click
   const handleDayClick = (day) => {
-    setSelectedDate(day);
-    // Here you would typically make an API call to upload the selected date to a database.
-    console.log("Date selected:", day);
-    // Example: uploadToDatabase(day);
+    setSelectedDate(day); // Set the clicked date as selected
   };
 
-  // Function to navigate to the next week
-  const nextWeek = () => {
-    setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() + 7)));
+  // Function to navigate to the next month
+  const nextMonth = () => {
+    setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
   };
 
-  // Function to navigate to the previous week
-  const prevWeek = () => {
-    setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() - 7)));
+  // Function to navigate to the previous month
+  const prevMonth = () => {
+    setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
   };
 
   return (
     <div className="calendar">
       <div className="calendar-header">
-        <button onClick={prevWeek}>{"<"}</button>
-        <h3>{daysOfWeek[0].toLocaleString('default', { weekday: 'long' })} - {daysOfWeek[6].toLocaleString('default', { weekday: 'long' })}, {daysOfWeek[0].toLocaleDateString()}</h3>
-        <button onClick={nextWeek}>{">"}</button>
+        <button onClick={prevMonth}>{"<"}</button>
+        <h3>{currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}</h3>
+        <button onClick={nextMonth}>{">"}</button>
       </div>
       <div className="calendar-grid">
-        {daysOfWeek.map((day, index) => (
+        {/* Create the 7 days of the week header */}
+        <div className="calendar-weekdays">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, index) => (
+            <div key={index} className="calendar-day-header">{day}</div>
+          ))}
+        </div>
+        {/* Create the 6x7 grid for the month */}
+        {daysOfMonth.map((day, index) => (
           <div
             key={index}
-            className={`calendar-day ${selectedDate && day.toDateString() === selectedDate.toDateString() ? "selected" : ""}`}
+            className={`calendar-day 
+              ${selectedDate && day.toDateString() === selectedDate.toDateString() ? "selected" : ""} 
+              ${day.getMonth() !== currentDate.getMonth() ? "not-current-month" : ""}
+              `}
             onClick={() => handleDayClick(day)}
           >
             {day.getDate()}
