@@ -19,7 +19,7 @@ app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`);
 });
 
-const usersFilePath = path.join(__dirname, "../data/users.json"); // Adjust path based on project structure
+const usersFilePath = path.join(__dirname, "users.json"); // Adjust path based on project structure
 
 // Load existing users from JSON file
 function loadUsers() {
