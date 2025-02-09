@@ -1,3 +1,18 @@
+# SPARKHACKS 2025
+
+- February 7-8, 2025
+- University of Illinois, Chicago
+
+Within 24 hours, teams in Sparkhacks are tasked with making something AWESOME in several categories! This year's Sparkhacks competition is themed around oceans! However, teams are not restricted to this theme
+
+## Authors
+
+- Carissa Lau [carissalau746](https://www.github.com/carissalau746)
+- Dhruv Patel [dhruvtp05](https://www.github.com/dhruvtp05)
+- Luke Deany [LD-UIC](https://www.github.com/LD-UIC)
+- Ian Edgar Arceo [IEdArc08](https://github.com/IEdArc08)
+- Dima Medvedkov [DimaMdv](https://github.com/DimaMdv)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
