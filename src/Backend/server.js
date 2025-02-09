@@ -135,7 +135,7 @@ app.post("/submit",(req, res) => {
 });
 
 //DELETE for removing times
-app.delete("/delete", (req, res) => {
+app.post("/delete", (req, res) => {
     try {
         const data = loadUsers();
         const timeId = req.body; // Expecting user email and time ID in the request body
