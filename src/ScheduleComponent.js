@@ -174,6 +174,11 @@ function ScheduleComponent()
             },
             body: JSON.stringify(deletedEvents)
         })
+
+        changedREALEvents.length = 0;
+        changedEvents.length = 0;
+        deletedEvents.length = 0;
+
     }
 
     return (
