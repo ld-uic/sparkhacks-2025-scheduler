@@ -119,8 +119,8 @@ app.post("/submit",(req, res) => {
         for (let i = 0; i < time_list.length; i++) {
             for (let j = 0; j < data[user_index].workhours.length; j++) {
                 if(data[user_index].workhours[j].id === time_list[i].id){
-                    data[user_index].workhours[j].startTime = time_list[i].startTime;
-                    data[user_index].workhours[j].endTime = time_list[i].endTime;
+                    data[user_index].workhours[j].start = time_list[i].start;
+                    data[user_index].workhours[j].end = time_list[i].end;
                 }
             }
         }
