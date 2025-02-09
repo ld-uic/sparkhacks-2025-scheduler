@@ -151,8 +151,12 @@ app.post("/delete", (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Remove the time entry with matching ID
-        data[userIndex].workhours = data[userIndex].workhours.filter(time => time.id !== timeId);
+        // Ensure we loop over all IDs and remove them
+        for (let timeI = 0; timeI < timeId.length; timeI++)
+        {
+            // Remove the time entry with matching ID
+            data[userIndex].workhours = data[userIndex].workhours.filter(time => time.id !== timeId[timeI]);
+        }
 
         saveUsers(data);
         return res.status(200).json({ message: "Work hour entry deleted successfully" });
