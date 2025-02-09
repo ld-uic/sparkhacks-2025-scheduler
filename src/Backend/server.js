@@ -8,10 +8,6 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "..", "build")))
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "build", "index.html"));
-});
-
 //app.get("/login", (req, res) => {
 //    res.sendFile(path.join(__dirname, "..", "..", "build", "login.html"));
 //});
@@ -33,6 +29,7 @@ function loadUsers() {
         const data = fs.readFileSync(usersFilePath, "utf8");
         return JSON.parse(data); // Parse JSON data into an object
     } catch (error) {
+        console.log("BAD");
         return []; // Return an empty array if file doesn't exist or is empty
     }
 }
@@ -76,12 +73,12 @@ app.post("/new", (req, res) => {
         // Get user id
         const user_email = "placeholder@hotmail.org" //TODO: change to actual stuff
         // finding user
-        var user_index = -1 
-        for (let i = 0; i < data.length; i++) {
-            if(data[i].id === user_email){
-                user_index = i;
-            }
-        }
+        var user_index = 0
+        //for (let i = 0; i < data.length; i++) {
+        //    if(data[i].id === user_email){
+        //        user_index = i;
+        //    }
+        //}
         // checking if we got the user
         if(user_index === -1){
             // TODO: Log user not found
@@ -91,11 +88,11 @@ app.post("/new", (req, res) => {
         data[user_index].workhours = [...data[user_index].workhours, ...time_list]
         // Submiting changes
         saveUsers(data);
-        res.status(201).json(time_list); // Respond with the created user
+        return res.status(201).json(time_list); // Respond with the created user
 
     } catch (err){
         console.error("Error creating user:", err);
-        res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
@@ -103,16 +100,16 @@ app.post("/new", (req, res) => {
 app.post("/submit",(req, res) => {
     try {
         const data = loadUsers();
-        const time_list = req.body
+        const time_list = req.body;
         // Get user id
         const user_email = "placeholder@hotmail.org" //TODO: change to actual stuff
         // finding user\
-        var user_index = -1 
-        for (let i = 0; i < data.length; i++) {
-            if(data[i].id == user_email){
-                user_index = i;
-            }
-        }
+        var user_index = 0
+        //for (let i = 0; i < data.length; i++) {
+        //    if(data[i].id == user_email){
+        //        user_index = i;
+        //    }
+        //}
         // checking if we got the user
         if(user_index == -1){
             // TODO: Log user not found
@@ -121,7 +118,7 @@ app.post("/submit",(req, res) => {
         // Going thru the BS i got into the function and replacing it un the db
         for (let i = 0; i < time_list.length; i++) {
             for (let j = 0; j < data[user_index].workhours.length; j++) {
-                if(data[user_index].workhours[j].id == time_list[i].id){
+                if(data[user_index].workhours[j].id === time_list[i].id){
                     data[user_index].workhours[j].startTime = time_list[i].startTime;
                     data[user_index].workhours[j].endTime = time_list[i].endTime;
                 }
@@ -129,11 +126,11 @@ app.post("/submit",(req, res) => {
         }
         // Submiting changes
         saveUsers(data);
-        res.status(201).json(newUser); // Respond with the created user
+        return res.status(201).json(time_list); // Respond with the created user
 
     } catch (err){
         console.error("Error creating user:", err);
-        res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" + err });
     }
 });
 
@@ -141,13 +138,14 @@ app.post("/submit",(req, res) => {
 app.delete("/delete", (req, res) => {
     try {
         const data = loadUsers();
-        const { userEmail, timeId } = req.body; // Expecting user email and time ID in the request body
+        const timeId = req.body; // Expecting user email and time ID in the request body
 
-        if (!userEmail || !timeId) {
-            return res.status(400).json({ error: "Missing userEmail or timeId" });
-        }
+        //if (!userEmail || !timeId) {
+        //   return res.status(400).json({ error: "Missing userEmail or timeId" });
+        //}
 
-        let userIndex = data.findIndex(user => user.id === userEmail);
+        //let userIndex = data.findIndex(user => user.id === userEmail);
+        const userIndex = 0;
 
         if (userIndex === -1) {
             return res.status(404).json({ error: "User not found" });
@@ -157,11 +155,11 @@ app.delete("/delete", (req, res) => {
         data[userIndex].workhours = data[userIndex].workhours.filter(time => time.id !== timeId);
 
         saveUsers(data);
-        res.status(200).json({ message: "Work hour entry deleted successfully" });
+        return res.status(200).json({ message: "Work hour entry deleted successfully" });
 
     } catch (err) {
         console.error("Error deleting work hour entry:", err);
-        res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
@@ -171,6 +169,10 @@ app.get("/retreve", (req, res) => {
         return res.send(data[0].workhours);
     } catch (err){
         console.error("Error creating user:", err);
-        res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({ error: "Internal Server Error" });
     }
+});
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "..", "build", "index.html"));
 });

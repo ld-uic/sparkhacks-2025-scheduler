@@ -1,5 +1,5 @@
 import { DayPilotCalendar, DayPilotNavigator, DayPilot } from "@daypilot/daypilot-lite-react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 function ScheduleComponent()
@@ -28,6 +28,34 @@ function ScheduleComponent()
     function updateChangedEvents(newEvent) {
         setChangedEvents([...changedEvents, newEvent]);
     }
+
+    var TEST_events = [];
+
+    useEffect(() => {
+        const data = fetch("http://localhost:3000/retreve")
+            .then(response => console.log(response.json().then(
+                test=>{
+                    for (var i = 0; i < test.length; i++)
+                    {
+                        console.log(test[i].start);
+                        const start = test[i].start;
+                        const end = test[i].end;
+                        const id = test[i].id;
+
+
+                        const created = createUserEvent(start, end, id);
+                        //TEST_events = [...TEST_events, created];
+                        calendar.events.add({
+                            start: start,
+                            end: end,
+                            id: id,
+                            text: "Work"
+                          });
+                    }
+                }
+            )))
+    }, [calendar])
+
 
     const config = {
         viewType: "Week",
@@ -122,17 +150,29 @@ function ScheduleComponent()
 
     function submitChanges()
     {
-        fetch("localhost:3000/submit", {
+        fetch("http://localhost:3000/submit", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                newTimes: changedEvents,
-                deletedTimes: deletedEvents,
-                changedTimes: changedREALEvents,
-            })
+            body: JSON.stringify(changedREALEvents)
+        })
+        fetch("http://localhost:3000/new", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(changedEvents)
+        })
+        fetch("http://localhost:3000/delete", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(deletedEvents)
         })
     }
 
